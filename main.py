@@ -3,9 +3,9 @@ from pyrr import Vector3, matrix44, Matrix44
 import glfw
 from OpenGL.GL.shaders import compileProgram, compileShader
 
-from rotation_util import rotation_matrix
-from texture_util import uploadTextureToGPU
-from object_loader import loadObject
+from utils.rotation_util import rotation_matrix
+from utils.texture_util import uploadTextureToGPU
+from loaders.object_loader import loadObject
 from OpenGL.GL import *
 import numpy as np
 
@@ -79,8 +79,8 @@ lamborghini_indices, lamborghini_buffer = loadObject("models/google.obj")
 nike_indices, nike_buffer = loadObject("models/nike.obj")
 spotify_indices, spotify_buffer = loadObject("models/spotify.obj")
 
-program = compileProgram(compileShader(getFileContents("objects.vertex.shader"), GL_VERTEX_SHADER),
-                         compileShader(getFileContents("objects.fragment.shader"), GL_FRAGMENT_SHADER))
+program = compileProgram(compileShader(getFileContents("shaders/objects.vertex.shader"), GL_VERTEX_SHADER),
+                         compileShader(getFileContents("shaders/objects.fragment.shader"), GL_FRAGMENT_SHADER))
 
 VAO = glGenVertexArrays(5)
 VBO = glGenBuffers(5)
@@ -126,7 +126,7 @@ while not glfw.window_should_close(window):
     dt = t - glfw.get_time()
     t = glfw.get_time()
 
-    rotation += -1 * dt
+    rotation += -10 * dt
 
     view = matrix44.create_look_at(Vector3([-4, 0, 10]), Vector3([2.5, 0, 0]), Vector3([0, 1, 0]))
     rotMat = matrix44.multiply(matrix44.create_from_x_rotation(np.radians(90)), matrix44.create_from_z_rotation(np.radians(rotation)))
